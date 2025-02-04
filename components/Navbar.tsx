@@ -10,6 +10,8 @@ import { Heart, Menu } from "lucide-react"
 const navItems = [
   { href: "/", label: "Home" },
   { href: "/create", label: "Create Invite" },
+  { href: "/privacy-policy", label: "Privacy Policy" },
+  { href: "/terms-of-service", label: "Terms of Service" },
 ]
 
 export function Navbar() {
