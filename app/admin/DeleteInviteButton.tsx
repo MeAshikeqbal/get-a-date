@@ -5,7 +5,10 @@ import { Button } from "@/components/ui/button"
 import { Trash2 } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 
-export default function DeleteInviteButton({ inviteId }: { inviteId: string }) {
+export default function DeleteInviteButton({
+  inviteId,
+  refreshInvites,
+}: { inviteId: string; refreshInvites: () => void }) {
   const [isDeleting, setIsDeleting] = useState(false)
   const { toast } = useToast()
 
@@ -13,15 +16,19 @@ export default function DeleteInviteButton({ inviteId }: { inviteId: string }) {
     if (confirm("Are you sure you want to delete this invite?")) {
       setIsDeleting(true)
       try {
+        const apiKey = localStorage.getItem("adminApiKey")
         const response = await fetch(`/api/invites/${inviteId}`, {
           method: "DELETE",
+          headers: {
+            "X-API-Key": apiKey || "",
+          },
         })
         if (response.ok) {
           toast({
             title: "Invite deleted",
             description: "The invite has been successfully deleted.",
           })
-          // Optionally, you can refresh the page or update the invite list here
+          refreshInvites()
         } else {
           throw new Error("Failed to delete invite")
         }

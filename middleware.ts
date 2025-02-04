@@ -11,12 +11,29 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(`https://${request.url.split("//")[1]}`)
   }
 
+  const whitelistedIPs = ['127.0.0.1', 'localhost','::1'];
+  if (whitelistedIPs.includes(ip)) {
+    return NextResponse.next();
+  }
+
   try {
     // Rate limiting
     const { success } = await rateLimiter.limit(ip)
     if (!success) {
       console.warn(`Rate limit exceeded for IP: ${ip}`)
       return new NextResponse("Too Many Requests", { status: 429 })
+    }
+
+    // API Key Authentication for admin routes
+    if (request.nextUrl.pathname.startsWith("/admin") || request.nextUrl.pathname.startsWith("/api/admin")) {
+      const apiKey = request.headers.get("X-API-Key")
+      if (apiKey !== process.env.ADMIN_API_KEY) {
+        if (request.nextUrl.pathname.startsWith("/admin")) {
+          return NextResponse.redirect(new URL("/admin/login", request.url))
+        } else {
+          return new NextResponse("Unauthorized", { status: 401 })
+        }
+      }
     }
 
     // JWT Authentication for protected routes
@@ -44,7 +61,7 @@ export async function middleware(request: NextRequest) {
     // CORS headers
     response.headers.set("Access-Control-Allow-Origin", process.env.ALLOWED_ORIGIN || "*")
     response.headers.set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-    response.headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+    response.headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization, X-API-Key")
 
     // Security headers
     response.headers.set("X-XSS-Protection", "1; mode=block")
@@ -61,6 +78,6 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/api/:path*"],
+  matcher: ["/api/:path*", "/admin/:path*"],
 }
 

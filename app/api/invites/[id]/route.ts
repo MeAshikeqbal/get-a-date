@@ -7,6 +7,11 @@ export async function DELETE(req: Request, context: { params: Promise<{ id: stri
     await dbConnect()
     const { id } = await context.params
 
+    const apiKey = req.headers.get("X-API-Key")
+    if (apiKey !== process.env.ADMIN_API_KEY) {
+      return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 })
+    }
+
     const deletedInvite = await Invite.findByIdAndDelete(id)
 
     if (!deletedInvite) {
