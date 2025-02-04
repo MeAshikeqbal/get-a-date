@@ -71,7 +71,7 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4 md:p-8">
+    <div className=" min-h-screen bg-gray-100 p-4 md:p-8">
       <h1 className="text-3xl font-bold mb-6 text-pink-600">Valentine&apos;s Admin Dashboard</h1>
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
         <Card>

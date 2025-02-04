@@ -10,7 +10,6 @@ import { Heart, Menu } from "lucide-react"
 const navItems = [
   { href: "/", label: "Home" },
   { href: "/create", label: "Create Invite" },
-  { href: "/admin", label: "Admin" },
 ]
 
 export function Navbar() {
@@ -18,12 +17,12 @@ export function Navbar() {
   const pathname = usePathname()
 
   return (
-    <nav className="bg-gradient-to-r from-pink-500 to-red-500 sticky top-0 z-50 shadow-md">
+    <nav className="bg-gradient-to-r from-pink-500 to-red-500 absolute w-full top-0 z-50 shadow-md">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center py-4">
           <Link href="/" className="flex items-center space-x-2">
             <Heart className="h-6 w-6 text-white" />
-            <span className="text-2xl font-bold text-white">Your Valentine</span>
+            <span className="text-2xl font-bold text-white">Get a date</span>
           </Link>
           <div className="hidden md:flex space-x-4">
             {navItems.map((item) => (

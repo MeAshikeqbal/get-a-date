@@ -77,7 +77,7 @@ export default function CreateInvite() {
 
   return (
     <motion.div
-      className="min-h-screen bg-gradient-to-b from-pink-100 to-red-100 flex flex-col items-center justify-center p-4"
+      className="min-h-screen pt-20 bg-gradient-to-b from-pink-100 to-red-100 flex flex-col items-center justify-center p-4"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
