@@ -7,7 +7,7 @@ export async function sendInviteEmail(to: string, inviteLink: string, senderName
 
   try {
     const { data, error } = await resend.emails.send({
-      from: "Your Valentine <noreply@local.homecave.site>",
+      from: "Your Valentine <noreply@getadate.ink>",
       to: [to],
       subject: "You have a Valentine's Invite!",
       html: `
@@ -70,7 +70,7 @@ export async function sendResponseNotificationEmail(
 
   try {
     const { data, error } = await resend.emails.send({
-      from: "Your Valentine <noreply@local.homecave.site>",
+      from: "Your Valentine <noreply@getadate.ink>",
       to: [to],
       subject: `${recipientName} has responded to your Valentine's Invite!`,
       html: `
