@@ -17,7 +17,7 @@ export function Navbar() {
   const pathname = usePathname()
 
   return (
-    <nav className="bg-gradient-to-r from-pink-500 to-red-500 sticky top-0 opacity-85 z-50 shadow-md">
+    <nav className="bg-gradient-to-r from-pink-500 to-red-500 sticky top-0 z-50 shadow-md">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center py-4">
           <Link href="/" className="flex items-center space-x-2">
