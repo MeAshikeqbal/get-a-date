@@ -11,11 +11,6 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(`https://${request.url.split("//")[1]}`)
   }
 
-  const whitelistedIPs = ['127.0.0.1', 'localhost','::1'];
-  if (whitelistedIPs.includes(ip)) {
-    return NextResponse.next();
-  }
-
   try {
     // Rate limiting
     const { success } = await rateLimiter.limit(ip)
