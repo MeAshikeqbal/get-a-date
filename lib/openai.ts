@@ -4,7 +4,7 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 })
 
-export async function generatePoem(recipientName: string, recipientEmail: any) {
+export async function generatePoem(recipientName: string) {
   const prompt = `Write a short, romantic Valentine's Day poem for ${recipientName}. Keep it under 4 lines.`
 
   const response = await openai.chat.completions.create({

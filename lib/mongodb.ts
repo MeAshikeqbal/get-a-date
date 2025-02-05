@@ -1,35 +1,36 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import mongoose from "mongoose"
 
-const MONGODB_URI = process.env.MONGODB_URI!
+const MONGODB_URI = process.env.MONGODB_URI
 
 if (!MONGODB_URI) {
   throw new Error("Please define the MONGODB_URI environment variable inside .env.local")
 }
 
-/**
- * Global is used here to maintain a cached connection across hot reloads
- * in development. This prevents connections growing exponentially
- * during API Route usage.
- */
-let cached = (global as any).mongoose
-
-if (!cached) {
-  cached = (global as any).mongoose = { conn: null, promise: null }
+interface GlobalWithMongoose {
+  mongoose:
+    | {
+        conn: mongoose.Connection | null
+        promise: Promise<mongoose.Connection> | null
+      }
+    | undefined
 }
 
-async function dbConnect() {
+declare const global: GlobalWithMongoose
+
+const cached = global.mongoose || { conn: null, promise: null }
+
+async function dbConnect(): Promise<mongoose.Connection> {
   if (cached.conn) {
     return cached.conn
   }
 
   if (!cached.promise) {
-    const opts = {
+    const opts: mongoose.ConnectOptions = {
       bufferCommands: false,
     }
 
     cached.promise = mongoose.connect(MONGODB_URI!, opts).then((mongoose) => {
-      return mongoose
+      return mongoose.connection
     })
   }
 

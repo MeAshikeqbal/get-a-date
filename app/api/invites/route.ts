@@ -42,7 +42,7 @@ export async function POST(req: Request) {
     const { senderName, senderEmail, recipientName, recipientEmail, message, isAnonymous, theme, gif } =
       validationResult.data
 
-    const poem = await generatePoem(recipientName, recipientEmail || "")
+    const poem = await generatePoem(recipientName)
     const inviteLink = nanoid(10)
 
     const invite = new Invite({
