@@ -11,7 +11,7 @@ const inviteSchema = z.object({
   senderName: z.string().nonempty(),
   senderEmail: z.string().email(),
   recipientName: z.string().nonempty(),
-  recipientEmail: z.string().email(),
+  recipientEmail: z.string().email().optional().or(z.literal("")),
   message: z.string().nonempty(),
   isAnonymous: z.boolean(),
   theme: z.enum(["romantic", "funny", "mysterious"]),
@@ -42,36 +42,40 @@ export async function POST(req: Request) {
     const { senderName, senderEmail, recipientName, recipientEmail, message, isAnonymous, theme, gif } =
       validationResult.data
 
-    const poem = await generatePoem(recipientName, recipientEmail)
+    const poem = await generatePoem(recipientName, recipientEmail || "")
+    const inviteLink = nanoid(10)
+
     const invite = new Invite({
       senderName,
       senderEmail,
       recipientName,
-      recipientEmail,
+      ...(recipientEmail && { recipientEmail }),
       message,
       isAnonymous,
       theme,
       gif,
       poem,
-      link: nanoid(10), // Generate a random 10-character string using nanoid
+      link: inviteLink,
     })
 
-    // Send email notification
+    // Send email notification only if recipientEmail is available and not empty
     let emailSent = false
-    try {
-      emailSent = await sendInviteEmail(recipientEmail, invite.link, senderName, isAnonymous)
-    } catch (emailError) {
-      console.error("Error sending email:", emailError)
-      // Continue with invite creation even if email fails
+    if (recipientEmail && recipientEmail.trim() !== "") {
+      try {
+        emailSent = await sendInviteEmail(recipientEmail, inviteLink, senderName, isAnonymous)
+        invite.emailSent = emailSent
+      } catch (emailError) {
+        console.error("Error sending email:", emailError)
+        // Continue with invite creation even if email fails
+      }
     }
 
-    invite.emailSent = emailSent
     await invite.save()
 
     return NextResponse.json({
       success: true,
-      link: invite.link,
-      emailSent: emailSent,
+      link: inviteLink,
+      emailSent,
     })
   } catch (error) {
     console.error("Error creating invite:", error)

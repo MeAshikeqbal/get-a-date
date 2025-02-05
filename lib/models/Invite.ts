@@ -4,7 +4,7 @@ const InviteSchema = new mongoose.Schema({
   senderName: String,
   senderEmail: String,
   recipientName: String,
-  recipientEmail: String,
+  recipientEmail: { type: String, required: false },
   message: String,
   isAnonymous: Boolean,
   theme: String,

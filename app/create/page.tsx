@@ -32,12 +32,7 @@ export default function CreateInvite() {
     e.preventDefault()
     setIsLoading(true)
 
-    if (
-      !formData.senderName ||
-      !formData.recipientName ||
-      !formData.message ||
-      !formData.senderEmail
-    ) {
+    if (!formData.senderName || !formData.recipientName || !formData.message || !formData.senderEmail) {
       toast({
         title: "Error",
         description: "Please fill in all required fields.",
@@ -141,7 +136,7 @@ export default function CreateInvite() {
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.4 }}
             >
-              <Label htmlFor="recipientEmail">Recipient&apos;s Email</Label>
+              <Label htmlFor="recipientEmail">Recipient&apos;s Email (Optional)</Label>
               <Input
                 id="recipientEmail"
                 type="email"
