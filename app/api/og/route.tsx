@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
         color: "#DB2777",
       }}
     >
-      <img src={`${process.env.NEXT_PUBLIC_APP_URL}/logo.png`} alt="Get a date logo" width="200" height="200" />
+      <img src={`${process.env.NEXT_PUBLIC_APP_URL}/web-app-manifest-512x512.png`} alt="Get a date logo" width="200" height="200" />
       <div style={{ marginTop: 40 }}>{title}</div>
     </div>,
     {
