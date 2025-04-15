@@ -29,7 +29,7 @@
     "nanoid": "^5.0.9",
     "next": "15.2.4",
     "openai": "^4.92.1",
-    "react": "^19.0.0",
+    "react": "^19.1.0",
     "react-dom": "^19.0.0",
     "react-markdown": "^9.0.3",
     "resend": "^4.2.0",
